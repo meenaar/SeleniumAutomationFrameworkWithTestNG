@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Suite]" guice-stage="DEVELOPMENT">
+  <listeners>
+    <listener class-name="com.automation.utility.SalesforceListenerUtility"/>
+  </listeners>
+  <test thread-count="5" name="SalesForceLoginTest(failed)">
+    <parameter name="browserName" value="chrome"/>
+    <classes>
+      <class name="com.automation.tests.LoginTests">
+        <methods>
+          <include name="tearDownAfterMethod"/>
+          <include name="setUpBeforeMethod"/>
+          <include name="TC2SalesforceLoginValid"/>
+        </methods>
+      </class> <!-- com.automation.tests.LoginTests -->
+    </classes>
+  </test> <!-- SalesForceLoginTest(failed) -->
+</suite> <!-- Failed suite [Suite] -->
