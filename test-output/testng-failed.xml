@@ -3,14 +3,14 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.automation.tests.ContactsTests">
+      <class name="com.automation.tests.UserMenuOptionsTests">
         <methods>
           <include name="tearDownAfterMethod"/>
           <include name="setUp"/>
-          <include name="TC33_Verify_LoggedInUser"/>
           <include name="setUpBeforeMethod"/>
+          <include name="TC6_MyProfileOption"/>
         </methods>
-      </class> <!-- com.automation.tests.ContactsTests -->
+      </class> <!-- com.automation.tests.UserMenuOptionsTests -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

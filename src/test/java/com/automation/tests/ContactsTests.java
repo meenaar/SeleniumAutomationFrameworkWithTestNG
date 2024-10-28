@@ -1,7 +1,10 @@
 package com.automation.tests;
 
+import java.util.Set;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
@@ -294,4 +297,66 @@ public class ContactsTests extends BaseSalesForce{
 		Assert.assertEquals(actualUsername, myProfileUserName.trim());
 	
 	}
+	
+	
+	@Test
+	public void TC34_Edit_UserLastName() throws InterruptedException {
+	
+		loginToSalesForce();
+		
+		clickTabLink ("home_Tab", "Home");
+		String lastNameToUpdate = "Ar";
+		
+		WebElement loggedUserLink = driver.findElement(By.xpath("//h1[@class='currentStatusUserName']/a"));
+			
+		String actualUsername = loggedUserLink.getText();
+		
+		System.out.println("actual username : "+actualUsername);
+		
+		clickElement(loggedUserLink, "logged Firstname & Lastname");	
+		
+		WebElement contactEditPen = driver.findElements(By.xpath("//img[@title='Edit Profile']")).get(0);
+		clickElement(contactEditPen, "Edit Contact");
+		
+		
+		driver.switchTo().frame("contactInfoContentId");
+		
+		System.out.println("\n***Control in contact frame***");
+		Thread.sleep(3000);
+		
+		
+		WebElement aboutTab=driver.findElement(By.xpath("//li[@id='aboutTab']/a"));
+		clickElement(aboutTab, "About Tab");
+		
+		WebElement lastName=driver.findElement(By.xpath("//*[@id=\"lastName\"]"));
+		lastName.clear();
+		enterText(lastName, lastNameToUpdate, "last name");
+		
+		System.out.println("last name is :"+lastName.getText());
+		
+		WebElement saveAll=driver.findElement(By.xpath("//input[@value='Save All']"));
+		clickElement(saveAll, "Save All");
+
+		driver.switchTo().parentFrame();
+		
+		//verify updated last name in user page title where it shows first name and last name
+		WebElement topUserName=driver.findElement(By.xpath("//span[@id='tailBreadcrumbNode']"));
+		System.out.println(topUserName.getText());
+		
+		String expName = topUserName.getText();
+				
+		String userPagelastName = splitNames(expName);
+		
+		Assert.assertEquals(userPagelastName, lastNameToUpdate);
+		
+		//verify updated last name in user menu navigation
+		WebElement userMenuEle = driver.findElement(By.xpath("//*[@id=\"userNav\"]"));
+		System.out.println("User menu   : "+userMenuEle.getText());
+		
+		String userMenulastName = splitNames(userMenuEle.getText());
+		
+		Assert.assertEquals(userMenulastName, lastNameToUpdate);
+		
+	}
+	
 }

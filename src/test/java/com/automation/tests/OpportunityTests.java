@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -137,5 +138,62 @@ public class OpportunityTests extends BaseSalesForce{
 		
 	}
 
+	@Test	
+	public void TC19TestQuarterlySummaryReport() throws InterruptedException {
+	
+		loginToSalesForce();
+	
+		String reportName = "Opportunity Report";
+		String expInterval = "Current FQ";
+		String expShow = "All opportunities";
+		
+		clickTabLink ("Opportunity_Tab", "Opportunity");
+		
+		WebElement intervalEle = driver.findElement(By.xpath("//*[@id='quarter_q']"));
+		
+		Select select = new Select(intervalEle);
+		
+		select.selectByVisibleText(expInterval);
+		
+		
+		WebElement includeEle = driver.findElement(By.xpath("//*[@id='open']"));
+		
+		Select selectInclude = new Select(includeEle);
+		
+		selectInclude.selectByValue("all");
+		
+		WebElement runReportBtn = driver.findElement(By.xpath("//input[@value='Run Report']"));
+		
+		clickElement(runReportBtn, "Run Report");
+		
+		// Verify the Opportunity Report page header and entered search criteria fields
+		WebElement reportPageHeader = driver.findElement(By.xpath("//h1[@class ='noSecondHeader pageType']"));
+		
+		mylog.info("Page header : "+ reportPageHeader.getText());
+		
+		Assert.assertEquals(reportPageHeader.getText(), reportName);
+	
+	
+		WebElement range = driver.findElement(By.xpath("//select[@id='quarter_q']"));
+	
+		Select selectRange = new Select(range);
+		
+		mylog.info("Selected range   : "+selectRange.getFirstSelectedOption().getText());
+		
+		String actualRange = selectRange.getFirstSelectedOption().getText();
+		
+		Assert.assertEquals(actualRange, expInterval);
+		
+	
+		WebElement show = driver.findElement(By.xpath("//select[@id='scope']"));
+		
+		Select selectShow = new Select(show);
+		
+		mylog.info("Selected show   : "+selectShow.getFirstSelectedOption().getText());
+		
+		String actualShow = selectShow.getFirstSelectedOption().getText();
+		
+		Assert.assertEquals(actualShow, expShow);
+	}
 
 }

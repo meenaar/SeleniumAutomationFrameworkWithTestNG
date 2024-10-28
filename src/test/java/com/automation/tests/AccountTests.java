@@ -2,6 +2,7 @@ package com.automation.tests;
 
 import java.util.List;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -185,8 +186,7 @@ public class AccountTests extends BaseSalesForce{
 
 	}
 	
-	@Test
-	
+	@Test	
 	public void TC13_Merge_Accounts() throws InterruptedException {
 		
 		loginToSalesForce();
@@ -194,26 +194,89 @@ public class AccountTests extends BaseSalesForce{
 		clickTabLink ("Account_Tab", "Accounts Tab");
 		
 		WebElement mergeAccountsLink = driver.findElement(By.xpath("//a[(text()='Merge Accounts')]"));
-		
 		clickElement(mergeAccountsLink, "Merge Accounts Link ");
 		
 		
 		WebElement searchAccTextBox = driver.findElement(By.xpath("//input[@id='srch']"));
-		
-		enterText(searchAccTextBox,"Grand", "Search Accounts contains 'Grand' ");
+		enterText(searchAccTextBox,"NewAccount1", "Search Accounts contains 'NewAccount1' ");
 		
 		WebElement findAccounts = driver.findElement(By.xpath("//input[@value='Find Accounts' and @type ='submit']"));
-		
 		clickElement(findAccounts, "Find Accounts ");
 	
 
-		///WebElement searchAccTextBox = driver.findElement(By.xpath("//input[starts-with(@id,'cid')]"));
+		List <WebElement> searchedAccChkbox = driver.findElements(By.xpath("//input[starts-with(@id,'cid')]"));
 		
+		for (int i=0; i<2; i++)
+		{
+			for (WebElement options: searchedAccChkbox) {
+					
+					selectElement(options, "select account to merge");				
+			}
+		}
 		
-		//input[starts-with(@id,'cid')]
+		WebElement nextBtn = driver.findElements(By.xpath("//input[@name='goNext' and @type='submit']")).get(0);
+		clickElement(nextBtn, "Next");
 		
+		Thread.sleep(4000);
 		
+		WebElement mergeBtn = driver.findElement(By.xpath("//input[@value=' Merge ' and @type='submit']"));
+		clickElement(mergeBtn, "Merge");		
 		
-		
+		Alert alert=switchToAlert();		
+		String data=getAlertText(alert,"merge warning alertbox");		
+		mylog.info(data);		
+		acceptAlert(alert);
+		mylog.info("merge successful");
 	}
+	
+	
+	@Test	
+	public void TC14_Create_AccountReport() throws InterruptedException {
+	
+
+		loginToSalesForce();
+
+		clickTabLink ("Account_Tab", "Accounts Tab");
+		
+		String reportName = "AllTimeReport10";
+		
+		String reportUniName = "Unique";
+		
+		WebElement accLastActivity = driver.findElement(By.xpath("//a[contains(text(),'Accounts with last activity')]"));
+		clickElement(accLastActivity, "Accounts with last activity > 30 days");
+
+
+		WebElement pageHeader = driver.findElement(By.className("pageDescription"));
+		
+		System.out.println("ppp : "+pageHeader);
+		
+		WebElement range = driver.findElement(By.xpath("//*[@id='ext-gen150']"));
+		clickElement(range, "range");
+		
+		Thread.sleep(3000);
+		
+		WebElement rangeAllTime = driver.findElement(By.xpath("//*[@class='x-combo-list-inner']/div[1]"));
+		clickElement(rangeAllTime, "All Time");
+
+		WebElement saveBtn = driver.findElement(By.xpath("//button[@type='button' and text()='Save']"));
+		clickElement(saveBtn, "Save report");
+		
+		WebElement reportNamesElme = driver.findElement(By.name("reportName"));
+		enterText(reportNamesElme, reportName , "Report Name");
+		
+		WebElement reportUniqueName = driver.findElement(By.name("reportDevName"));
+		reportUniqueName.clear();
+		enterText(reportUniqueName, reportUniName, "Report Unique Name");
+		
+		Thread.sleep(3000);
+		WebElement saveAndRunReport = driver.findElement(By.xpath("//*[@id ='dlgSaveAndRun']"));
+		clickElement(saveAndRunReport, "Save and Run Report");
+		
+		Thread.sleep(3000);
+		WebElement reportPageHeader = driver.findElement(By.xpath("//h1[@class ='noSecondHeader pageType']"));
+		
+		Assert.assertEquals(reportPageHeader.getText(), reportName);
+	}
+	
+	
 }

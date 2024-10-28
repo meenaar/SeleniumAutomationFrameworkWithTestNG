@@ -28,7 +28,7 @@ public class BaseTest {
 	public static WebDriver driver = null;
 	private WebDriverWait wait = null;
 	
-	private Logger mylog = LogManager.getLogger(BaseTest.class);
+	protected Logger mylog = LogManager.getLogger(BaseTest.class);
 	protected ExtentReportsUtility extentReportUtility = ExtentReportsUtility.getInstance();
 	
 	
@@ -116,7 +116,7 @@ public class BaseTest {
 			extentReportUtility.reportTestInfo(objectName+" is selected");
 		}
 		else{
-			mylog.error(objectName+" is already selected");
+			mylog.info(objectName+" is already selected");
 			extentReportUtility.reportTestFailed(objectName+" is already selected");
 		}
 	}
@@ -177,5 +177,7 @@ public class BaseTest {
 		
 		wait.until(ExpectedConditions.textToBePresentInElement(ele, text));		
 	}
+	
+	
 	
 }
