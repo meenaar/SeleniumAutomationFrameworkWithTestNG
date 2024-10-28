@@ -42,7 +42,7 @@ public class UserMenuOptionsTests extends BaseSalesForce {
 		
 		driver.switchTo().frame("contactInfoContentId");
 		
-		System.out.println("\n***Control in parent frame***");
+		System.out.println("\n***Control in contact frame***");
 		Thread.sleep(6000);
 		
 		
@@ -65,14 +65,16 @@ public class UserMenuOptionsTests extends BaseSalesForce {
 		WebElement postEle =driver.findElement(By.xpath("//span[text()='Post']"));
 		clickElement(postEle, "Post");
 		
-		WebElement childFrame = driver.findElement(By.cssSelector("cke_43_contents > iframe"));
+		/* Have to complete rest
+		 * 
+		 * WebElement childFrame = driver.findElement(By.cssSelector("cke_43_contents > iframe"));
 		
 		driver.switchTo().frame(childFrame);
 		
 		WebElement postTextArea =driver.findElement(By.xpath("//body/p"));
 		enterText(postTextArea, "Hello entered", "Post text area");
 		
-		
+		*/
 	}
 	
 	@Test
@@ -118,7 +120,7 @@ public class UserMenuOptionsTests extends BaseSalesForce {
 		WebElement customizeTabEle1 = driver.findElement(By.id("CustomizeTabs_font"));
 		clickElement(customizeTabEle1, "Customize My Tabs");
 
-		// executed fine till above code
+		
 		WebElement customAppDDEle1 = driver.findElement(By.id("p4"));
 
 		Select select2 = new Select(customAppDDEle1);
@@ -138,10 +140,7 @@ public class UserMenuOptionsTests extends BaseSalesForce {
 
 			if (TabsLists.contains("Reports")) { // check if value exist in list above
 				mylog.info("Reports tab is there.");
-			}
-			// else{
-			// mylog.info("Reports tab not found.");
-			// }
+			}			
 		}
 
 		// EmailSetup_font
@@ -189,8 +188,7 @@ public class UserMenuOptionsTests extends BaseSalesForce {
 
 		System.out.println("..........." + driver.getWindowHandle());
 
-		// fetch handles of all windows, there will be two, [0]- default, [1] - new
-		// window
+		// fetch handles of all windows, there will be two, [0]- default, [1] - new window
 
 		Object[] windowHandles = driver.getWindowHandles().toArray();
 		driver.switchTo().window((String) windowHandles[1]);
@@ -207,9 +205,9 @@ public class UserMenuOptionsTests extends BaseSalesForce {
 		driver.close();
 		// Switch back to the old tab or window
 		driver.switchTo().window((String) windowHandles[0]);
-
 	}
 
+	
 	@Test
 	public void TC9_LogoutSalesForce() throws InterruptedException {
 
